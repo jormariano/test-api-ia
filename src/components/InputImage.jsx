@@ -1,19 +1,19 @@
 import './InputImage.css';
-import { useImageUpload } from '../hooks/useImageUpload';
 
-const InputImage = ({ endpoint }) => {
-  const { image, handleSaveFile, uploadImage } = useImageUpload();
+const InputImage = ({
+  gradient,
+  endpoint,
+  image,
+  handleSaveFile,
+  uploadImage,
+}) => {
   return (
-    <div className="upload-card">
+    <div className="upload-image">
       <h3 className="upload-title">Cargar imagen</h3>
-
-      {/* Input file estilizado */}
       <label className="file-label">
         Seleccionar archivo
         <input type="file" onChange={handleSaveFile} className="file-input" />
       </label>
-
-      {/* Preview */}
       <div className="preview-container">
         {image && (
           <img
@@ -23,11 +23,10 @@ const InputImage = ({ endpoint }) => {
           />
         )}
       </div>
-
-      {/* Botón */}
       <button
         disabled={!image}
         className="analyze-button"
+        style={{ background: gradient }}
         onClick={() => uploadImage(endpoint)}
       >
         Analizar imagen

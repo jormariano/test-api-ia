@@ -1,13 +1,13 @@
-.estimate-border {
-  background-color: #eef6ef;
+.analysis-border {
+  background-color: #ddeef2;
   border: 1px solid #ddd;
   border-radius: 0.5rem;
   padding: 0.2rem;
   width: 100%;
 }
 
-.estimate-container {
-  background-color: #e8f4e9;
+.analysis-container {
+  background-color: #d6ecf1;
   border: 1px solid #ddd;
   border-radius: 0.5rem;
   padding: 1rem 0.5rem;
@@ -20,19 +20,19 @@
   gap: 1rem;
 }
 
-.estimate-container h1 {
-  font-size: 1rem;
-}
-
-.estimate-title {
+.analysis-title {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.card-icon.estimate {
+.analysis-container h1 {
+  font-size: 1rem;
+}
+
+.card-icon.car {
   color: white;
-  background-color: #87cd8d;
+  background-color: #57c3d9;
   padding: 0.3rem;
   border-radius: 50%;
   height: 1.5rem;
@@ -49,36 +49,21 @@
   margin-bottom: 0.5rem;
 }
 
-.result-container {
-  max-width: 600px;
-}
-
-.workshop {
-  margin-bottom: 15px;
-  color: #333;
-  font-size: 1rem;
-}
-
-.budget-table {
+.result-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 10px;
+  margin-top: 0.5rem;
 }
 
-.budget-table th {
-  background-color: #f4f4f4;
-  padding: 0.5rem;
+.result-table td {
+  border: 1px solid #ccc;
+  padding: 0.6rem;
   text-align: left;
-}
-
-.budget-table td {
-  padding: 0.5rem;
-  border: 1px solid #ddd;
 }
 
 .table-label {
   font-weight: bold;
-  background-color: #f9fcf9;
+  background-color: #f4f8f9;
   width: 40%;
 }
 
@@ -87,29 +72,12 @@
   width: 40%;
 }
 
-.budget-table tr:hover {
-  background-color: #fafafa;
-}
-
-.summary {
-  text-align: right;
-  background-color: white;
-  padding: 0.5rem;
-}
-
-.summary p {
-  margin: 5px 0;
-  font-size: 1rem;
-}
-
-.total {
-  font-size: 1.2rem;
-  font-weight: bold;
-  color: #222;
+.result-table tr:nth-child(even) {
+  background-color: #f9fbfc;
 }
 
 @media screen and (min-width: 1280px) {
-  .card-icon.estimate {
+  .card-icon.car {
     height: 2rem;
     width: 2rem;
   }

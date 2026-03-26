@@ -1,61 +1,100 @@
+import './AnalysisImage.css';
 import { useImageUpload } from '../../hooks/useImageUpload';
 import InputImage from '../../components/InputImage';
+import { FaCar } from 'react-icons/fa';
 
 const AnalysisImage = () => {
-  const { result, error, loading } = useImageUpload();
+  const { image, result, error, loading, handleSaveFile, uploadImage } =
+    useImageUpload();
+
+  console.log('RESULT EN PADRE:', result);
 
   return (
-    <>
-      <h1>Verifica el estado de tu auto</h1>
-      <section className="container-input">
-        <InputImage endpoint="/api/image-analysis" />
-      </section>
-      {result ? (
-        <section className="container-all-results">
-          <h3>Resultado: </h3>
-          <div>
-            {loading ? (
-              <p>Cargando...</p>
-            ) : error ? (
-              <p style={{ color: 'red' }}>{error}</p>
-            ) : result ? (
-              <div className="container-result">
-                <div className="container-result-image">
-                  <p className="result-p"> La imagen: </p>
-                  {result.is_car ? (
-                    <p>Es un auto</p>
-                  ) : (
-                    <p>Lo siento, la imagen cargada, no es un auto.</p>
-                  )}
-                </div>
+    <div className="analysis-border">
+      <div className="analysis-container">
+        <div className="analysis-title">
+          <FaCar className="card-icon car" />
+
+          <h1>Verifica el estado de tu auto</h1>
+        </div>
+
+        <section className="container-input">
+          <InputImage
+            endpoint="/api/image-analysis"
+            gradient="linear-gradient(135deg, #3a98ad, #57c3d9)"
+            image={image}
+            handleSaveFile={handleSaveFile}
+            uploadImage={uploadImage}
+          />
+        </section>
+
+        {loading && (
+          <p
+            style={{
+              color: 'green',
+              background: 'white',
+              padding: '0.5rem',
+              borderRadius: '0.2rem',
+            }}
+          >
+            Procesando...
+          </p>
+        )}
+
+        {error && (
+          <p
+            style={{
+              color: 'red',
+              background: 'white',
+              padding: '0.5rem',
+              borderRadius: '0.2rem',
+            }}
+          >
+            {error}
+          </p>
+        )}
+
+        {result && (
+          <section className="container-all-results">
+            <h3>Análisis:</h3>
+
+            <table className="result-table">
+              <tbody>
+                <tr>
+                  <td className="table-label">La imagen:</td>
+
+                  <td className="table-label-value">
+                    {result.is_car ? 'Es un auto' : 'No es un auto'}
+                  </td>
+                </tr>
 
                 {result.is_car && (
-                  <>
-                    <div className="container-result-state">
-                      <p className="result-p">Estado del auto: </p>
-                      {result.condition === 'damaged' ? (
-                        <p>Dañado</p>
-                      ) : (
-                        <p>En buen estado</p>
-                      )}
-                    </div>
+                  <tr>
+                    <td className="table-label">Estado del auto:</td>
 
-                    <div>
-                      {result.condition === 'damaged' && (
-                        <>
-                          <p className="result-p">Descripción del daño:</p>
-                          <p>{result.damage_description}</p>
-                        </>
-                      )}
-                    </div>
-                  </>
+                    <td className="table-label-value">
+                      {result.condition === 'damaged'
+                        ? 'Dañado'
+                        : 'En buen estado'}
+                    </td>
+                  </tr>
                 )}
-              </div>
-            ) : null}
-          </div>
-        </section>
-      ) : null}
-    </>
+
+                {result.is_car && result.condition === 'damaged' && (
+                  <tr>
+                    <td className="table-label">Descripción del daño:</td>
+
+                    <td className="table-label-value">
+                      {result.damage_description}
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </section>
+        )}
+      </div>
+    </div>
   );
 };
 

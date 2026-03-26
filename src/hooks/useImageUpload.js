@@ -67,6 +67,9 @@ export const useImageUpload = () => {
     result,
     error,
     loading,
+    setResult,
+    setError,
+    setLoading,
     handleSaveFile,
     uploadImage,
   };
