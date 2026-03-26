@@ -16,23 +16,15 @@ export default async function handleAPI(req, res) {
     const response = await openAI.responses.create({
       model: 'gpt-5.2',
       instructions:
-        'You are an assistant that recognizes if an image is of a car and if it is damaged.',
+        'You are an assistant that recognizes if an image is of a car and if it is damaged. Always respond in Spanish.',
+
       input: [
         {
           role: 'user',
-
           content: [
             {
               type: 'input_text',
-              text: `
-Analiza esta imagen y responde en JSON:
-
-{
- "is_car": true/false,
- "condition": "good" | "damaged",
- "damage_description": "describe daños visibles"
-}
-`,
+              text: 'Analiza esta imagen y describe los daños en español.',
             },
             {
               type: 'input_image',
@@ -41,15 +33,44 @@ Analiza esta imagen y responde en JSON:
           ],
         },
       ],
+
+      text: {
+        format: {
+          type: 'json_schema',
+          name: 'car_analysis',
+          strict: true,
+          schema: {
+            type: 'object',
+            properties: {
+              is_car: { type: 'boolean' },
+              condition: {
+                type: 'string',
+                enum: ['good', 'damaged'],
+              },
+              damage_description: {
+                type: 'string',
+              },
+            },
+            required: ['is_car', 'condition', 'damage_description'],
+            additionalProperties: false,
+          },
+        },
+      },
     });
 
-    const text = response.output_text;
+    let parsedResult;
 
-    const parsedResult = JSON.parse(text);
+    if (response.output_parsed) {
+      parsedResult = response.output_parsed;
+    } else if (response.output_text) {
+      parsedResult = JSON.parse(response.output_text);
+    } else {
+      return res.status(500).json({
+        error: 'No se pudo obtener respuesta del modelo',
+      });
+    }
 
     res.status(200).json(parsedResult);
-
-    console.log('Imagen recibida:', imageBase64?.slice(0, 50));
   } catch (error) {
     res.status(500).json({
       error: error.message,
