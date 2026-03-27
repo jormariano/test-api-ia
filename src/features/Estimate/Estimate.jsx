@@ -1,13 +1,19 @@
 import './Estimate.css';
 import { useImageUpload } from '../../hooks/useImageUpload';
-import InputImage from '../../components/InputImage';
+import InputImage from '../../components/InputImage/InputImage';
 import { FaWpforms } from 'react-icons/fa';
+import SuccessfulResult from './SuccessfulResult';
 
 const Estimate = () => {
-  const { image, result, error, loading, handleSaveFile, uploadImage } =
-    useImageUpload();
-
-  console.log('RESULT EN PADRE:', result);
+  const {
+    image,
+    result,
+    error,
+    loading,
+    handleSaveFile,
+    uploadImage,
+    clearData,
+  } = useImageUpload();
 
   return (
     <div className="estimate-border">
@@ -23,6 +29,7 @@ const Estimate = () => {
           image={image}
           handleSaveFile={handleSaveFile}
           uploadImage={uploadImage}
+          clearData={clearData}
         />
 
         {loading && (
@@ -51,65 +58,20 @@ const Estimate = () => {
           </p>
         )}
 
-        {result && (
-          <section className="container-all-results">
-            <h3>Presupuesto:</h3>
-
-            <div className="result-container">
-              {result.workshop && (
-                <h2 className="workshop">Taller: {result.workshop}</h2>
-              )}
-
-              <table className="budget-table">
-                <thead>
-                  <tr>
-                    <th>Descripción</th>
-                    <th>Precio</th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {result.items.map((item, index) => (
-                    <tr key={index}>
-                      <td className="table-label">{item.description}</td>
-                      <td className="table-label-value">
-                        ${item.price.toLocaleString()}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-
-              <div className="summary">
-                {result.subtotal !== null && (
-                  <p>
-                    <strong>Subtotal:</strong> $
-                    {result.subtotal.toLocaleString()}
-                  </p>
-                )}
-
-                {result.iva !== null && (
-                  <p>
-                    <strong>IVA:</strong> ${result.iva.toLocaleString()}
-                  </p>
-                )}
-
-                {result.discount !== null && (
-                  <p>
-                    <strong>Descuento:</strong> $
-                    {result.discount.toLocaleString()}
-                  </p>
-                )}
-
-                {result.total !== null && (
-                  <p className="total">
-                    <strong>Total:</strong> ${result.total.toLocaleString()}
-                  </p>
-                )}
-              </div>
-            </div>
-          </section>
+        {result && !result.is_budget && (
+          <p
+            style={{
+              color: 'red',
+              background: 'white',
+              padding: '0.5rem',
+              borderRadius: '0.2rem',
+            }}
+          >
+            La imagen no parece ser un presupuesto válido.
+          </p>
         )}
+
+        {result && result.is_budget && <SuccessfulResult result={result} />}
       </div>
     </div>
   );

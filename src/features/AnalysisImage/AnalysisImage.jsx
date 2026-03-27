@@ -1,13 +1,19 @@
 import './AnalysisImage.css';
 import { useImageUpload } from '../../hooks/useImageUpload';
-import InputImage from '../../components/InputImage';
+import InputImage from '../../components/InputImage/InputImage';
 import { FaCar } from 'react-icons/fa';
+import SuccessfulResult from './SuccessfulResult';
 
 const AnalysisImage = () => {
-  const { image, result, error, loading, handleSaveFile, uploadImage } =
-    useImageUpload();
-
-  console.log('RESULT EN PADRE:', result);
+  const {
+    image,
+    result,
+    error,
+    loading,
+    handleSaveFile,
+    uploadImage,
+    clearData,
+  } = useImageUpload();
 
   return (
     <div className="analysis-border">
@@ -25,6 +31,7 @@ const AnalysisImage = () => {
             image={image}
             handleSaveFile={handleSaveFile}
             uploadImage={uploadImage}
+            clearData={clearData}
           />
         </section>
 
@@ -67,28 +74,7 @@ const AnalysisImage = () => {
                     {result.is_car ? 'Es un auto' : 'No es un auto'}
                   </td>
                 </tr>
-
-                {result.is_car && (
-                  <tr>
-                    <td className="table-label">Estado del auto:</td>
-
-                    <td className="table-label-value">
-                      {result.condition === 'damaged'
-                        ? 'Dañado'
-                        : 'En buen estado'}
-                    </td>
-                  </tr>
-                )}
-
-                {result.is_car && result.condition === 'damaged' && (
-                  <tr>
-                    <td className="table-label">Descripción del daño:</td>
-
-                    <td className="table-label-value">
-                      {result.damage_description}
-                    </td>
-                  </tr>
-                )}
+                <SuccessfulResult result={result} />
               </tbody>
             </table>
           </section>

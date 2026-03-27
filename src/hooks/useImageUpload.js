@@ -51,15 +51,18 @@ export const useImageUpload = () => {
 
       const res = await req.json();
 
-      console.log('Respuesta backend:', res);
-
       setResult(res);
     } catch (error) {
-      console.error(error);
       setError('Error al analizar la imagen');
     } finally {
       setLoading(false);
     }
+  };
+
+  const clearData = () => {
+    setImage(null);
+    setResult(null);
+    setError('');
   };
 
   return {
@@ -67,10 +70,12 @@ export const useImageUpload = () => {
     result,
     error,
     loading,
+    setImage,
     setResult,
     setError,
     setLoading,
     handleSaveFile,
     uploadImage,
+    clearData,
   };
 };

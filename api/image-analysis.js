@@ -5,6 +5,7 @@ export default async function handleAPI(req, res) {
     const openAI = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
     });
+
     const { imageBase64 } = req.body;
 
     if (!imageBase64) {
@@ -15,6 +16,7 @@ export default async function handleAPI(req, res) {
 
     const response = await openAI.responses.create({
       model: 'gpt-5.2',
+
       instructions:
         'You are an assistant that recognizes if an image is of a car and if it is damaged. Always respond in Spanish.',
 
@@ -65,6 +67,8 @@ export default async function handleAPI(req, res) {
     } else if (response.output_text) {
       parsedResult = JSON.parse(response.output_text);
     } else {
+      console.log('Respuesta completa:', response);
+
       return res.status(500).json({
         error: 'No se pudo obtener respuesta del modelo',
       });
@@ -72,6 +76,8 @@ export default async function handleAPI(req, res) {
 
     res.status(200).json(parsedResult);
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       error: error.message,
     });

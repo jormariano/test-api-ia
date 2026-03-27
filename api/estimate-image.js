@@ -17,8 +17,22 @@ export default async function handleAPIEstimate(req, res) {
     const response = await openAI.responses.create({
       model: 'gpt-5.2',
 
-      instructions:
-        'You read handwritten car repair budgets. Extract structured data in Spanish. If a value does not exist in the image, return null.',
+      instructions: `
+You are an assistant that analyzes images.
+
+First determine if the image is a car repair budget.
+
+If it IS a budget:
+Extract structured data in Spanish.
+Extract workshop name if present.
+Extract items with description and price.
+Extract subtotal, IVA, discount and total if present.
+If a value does not exist, return null.
+
+If it is NOT a budget:
+Return is_budget as false.
+Return null for all other fields.
+`,
 
       input: [
         {
@@ -46,6 +60,7 @@ export default async function handleAPIEstimate(req, res) {
             type: 'object',
 
             properties: {
+              is_budget: { type: 'boolean' },
               workshop: { type: ['string', 'null'] },
               date: { type: ['string', 'null'] },
               items: {
@@ -74,6 +89,7 @@ export default async function handleAPIEstimate(req, res) {
               },
             },
             required: [
+              'is_budget',
               'workshop',
               'date',
               'items',
