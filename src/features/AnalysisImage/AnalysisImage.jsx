@@ -3,6 +3,7 @@ import { useImageUpload } from '../../hooks/useImageUpload';
 import InputImage from '../../components/InputImage/InputImage';
 import { FaCar } from 'react-icons/fa';
 import SuccessfulResult from './SuccessfulResult';
+import DownloadPDF from '../../components/Download/DownloadPDF';
 
 const AnalysisImage = () => {
   const {
@@ -77,6 +78,17 @@ const AnalysisImage = () => {
                 <SuccessfulResult result={result} />
               </tbody>
             </table>
+            {result.is_car ? (
+              <DownloadPDF
+                result={result}
+                docText="Análisis"
+                docSave="análisis.pdf"
+                gradient="linear-gradient(135deg, #3a98ad, #57c3d9)"
+                type="car-analysis"
+              />
+            ) : (
+              ''
+            )}
           </section>
         )}
       </div>

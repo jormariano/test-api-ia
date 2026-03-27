@@ -1,3 +1,5 @@
+import DownloadPDF from '../../components/Download/DownloadPDF';
+
 const SuccessfulResult = ({ result }) => {
   return (
     <section className="container-all-results">
@@ -54,6 +56,14 @@ const SuccessfulResult = ({ result }) => {
           )}
         </div>
       </div>
+
+      <DownloadPDF
+        result={result}
+        docText="Presupuesto"
+        docSave={`${result.workshop || 'presupuesto'}.pdf`}
+        gradient="linear-gradient(135deg, #5ea065, #87cd8d)"
+        type="budget"
+      />
     </section>
   );
 };
